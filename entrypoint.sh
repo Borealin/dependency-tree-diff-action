@@ -2,8 +2,14 @@
 
 cd "$INPUT_BUILD_ROOT_DIR"
 
+# Set up authentication header if GitHub token is provided
+AUTH_HEADER=""
+if [ -n "$INPUT_GITHUB_TOKEN" ]; then
+  AUTH_HEADER="-H \"Authorization: Bearer $INPUT_GITHUB_TOKEN\""
+fi
+
 if [ "$INPUT_VERSION" == "latest" ]; then
-  curl -s https://api.github.com/repos/JakeWharton/dependency-tree-diff/releases/latest \
+  eval "curl -s $AUTH_HEADER https://api.github.com/repos/JakeWharton/dependency-tree-diff/releases/latest" \
   | grep "/dependency-tree-diff.jar" \
   | cut -d : -f 2,3 \
   | tr -d \" \

@@ -5,7 +5,8 @@ param(
     [string]$InputBuildRootDir = $env:INPUT_BUILD_ROOT_DIR,
     [string]$InputVersion = $env:INPUT_VERSION,
     [string]$InputAdditionalGradleArguments = $env:INPUT_ADDITIONAL_GRADLE_ARGUMENTS,
-    [string]$InputDebug = $env:INPUT_DEBUG
+    [string]$InputDebug = $env:INPUT_DEBUG,
+    [string]$InputGitHubToken = $env:INPUT_GITHUB_TOKEN
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,7 +14,13 @@ $ErrorActionPreference = "Stop"
 Set-Location $InputBuildRootDir
 
 if ($InputVersion -eq "latest") {
-    $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/JakeWharton/dependency-tree-diff/releases/latest"
+    # Set up authentication headers if GitHub token is provided
+    $headers = @{}
+    if (![string]::IsNullOrEmpty($InputGitHubToken)) {
+        $headers["Authorization"] = "Bearer $InputGitHubToken"
+    }
+    
+    $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/JakeWharton/dependency-tree-diff/releases/latest" -Headers $headers
     $downloadUrl = $latestRelease.assets | Where-Object { $_.name -eq "dependency-tree-diff.jar" } | Select-Object -ExpandProperty browser_download_url
     Invoke-WebRequest -Uri $downloadUrl -OutFile "dependency-tree-diff.jar"
 } else {
