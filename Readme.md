@@ -1,6 +1,6 @@
-# Dependency Tree Diff - Github Action
+# Dependency Tree Diff Cross-platform - Github Action
 
-![.github/workflows/main.yml](https://github.com/usefulness/dependency-tree-diff-action/workflows/.github/workflows/main.yml/badge.svg)
+![.github/workflows/main.yml](https://github.com/Borealin/dependency-tree-diff-action/workflows/.github/workflows/main.yml/badge.svg)
 
 Simple Github Action wrapper for Jake Wharton's [Dependency Tree Diff](https://github.com/JakeWharton/dependency-tree-diff) tool.
 
@@ -33,7 +33,7 @@ jobs:
 
     - id: dependency-diff
       name: Generate dependency diff
-      uses: usefulness/dependency-tree-diff-action@v2
+      uses: Borealin/dependency-tree-diff-action@v1
 
     - uses: peter-evans/find-comment@v3
       id: find_comment
@@ -59,7 +59,7 @@ jobs:
 All inputs with their default values:
 ```yml
     - id: dependency-diff
-      uses: usefulness/dependency-tree-diff-action@v2
+      uses: Borealin/dependency-tree-diff-action@v1
       with:
         configuration: 'releaseRuntimeClasspath'
         project: 'app'
